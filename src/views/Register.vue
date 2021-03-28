@@ -98,7 +98,7 @@ export default {
     agree: {checked: v => v}
   },
   methods: {
-    submitHandler() {
+    async submitHandler() {
       // если поле для валидации v находится в состоянии invalid  
       if (this.$v.$invalid) {
         // то тогда будем вызывать валидацию
@@ -112,10 +112,11 @@ export default {
         password: this.password,
         name: this.name
       }
-      console.log(formData);
-
-      // если регистрация прошла успешно, то производим редирект на главную страницу
-      this.$router.push('/')
+      try{
+        await this.$store.dispatch('register', formData)
+        // если регистрация прошла успешно, то производим редирект на главную страницу
+        this.$router.push('/')
+      } catch (e) {}
     }
   }
 }
