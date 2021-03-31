@@ -36,9 +36,10 @@ export default {
       return user ? user.uid : null
     },
 
-    async logout() {
+    async logout({commit}) {
       // обращаемся к firebase и очищаем данные
       await firebase.auth().signOut()
+      commit('clearInfo')
     }
   }
 }

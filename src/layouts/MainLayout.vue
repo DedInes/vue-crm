@@ -1,5 +1,7 @@
 <template>
-  <div class="app-main-layout">
+<div>
+  <Loader  v-if="loading" />
+  <div class="app-main-layout" v-else >
     <!--Добавляем импортированные компоненты Navbar и Sidebar в верстку-->
     <Navbar @click="isOpen = !isOpen" />
 
@@ -18,6 +20,7 @@
       </router-link>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -29,8 +32,18 @@ export default {
   name: "main-layout",
   // Массив состояний
   data: () => ({
-    isOpen: true
+    isOpen: true,
+    loading: true
   }),
+  async mounted() {
+    // проверяем есть ли информация
+    if (!Object.keys(this.$store.getters.info).length) {
+      // ассинхронный запрос на получение данных у пользователей
+      await this.$store.dispatch('fetchInfo')
+    }
+    // если данных нету, то loading будет false после получения данных
+    this.loading = false
+  },
   components: {
     Navbar, Sidebar,
   },
