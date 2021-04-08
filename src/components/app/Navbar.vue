@@ -11,16 +11,16 @@
       <ul class="right hide-on-small-and-down">
         <li>
           <a
-            class="dropdown-trigger black-text"
-            href="#"
-            data-target="dropdown"
-            ref="dropdown"
+              class="dropdown-trigger black-text"
+              href="#"
+              data-target="dropdown"
+              ref="dropdown"
           >
             {{name}}
             <i class="material-icons right">arrow_drop_down</i>
           </a>
 
-          <ul id="dropdown" class="dropdown-content">
+          <ul id='dropdown' class='dropdown-content'>
             <li>
               <router-link to="/profile" class="black-text">
                 <i class="material-icons">account_circle</i>Профиль
@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import { setInterval, clearInterval } from 'timers';
 export default {
   // Создаем поле data для отображения реального времени на странице
   data: () => ({
@@ -50,20 +49,20 @@ export default {
   }),
   // Обрабатываем событие logout и создаем метод
   methods: {
-    async logout(){
-      await this.$store.dispatch('/logout')
+    async logout() {
+      await this.$store.dispatch('logout')
       this.$router.push('/login?message=logout')
     }
   },
+  // устанавливаем имя пользователя из базы данных (объект state) в navbar
   computed: {
-    // устанавливаем имя пользователя из базы данных (объект state) в navbar
     name() {
       return this.$store.getters.info.name
     }
   },
   mounted() {
     // Постоянное обновление даты
-    this.interval = setInterval(() =>{
+    this.interval = setInterval(() => {
       this.date = new Date()
     }, 1000)
     // Обращаемся к объекту dropdown-trigger по ссылке ref="dropdown"

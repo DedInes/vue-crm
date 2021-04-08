@@ -1,36 +1,36 @@
 <template>
-<div>
-  <Loader  v-if="loading" />
-  <div class="app-main-layout" v-else >
-    <!--Добавляем импортированные компоненты Navbar и Sidebar в верстку-->
-    <Navbar @click="isOpen = !isOpen" />
+  <div>
+    <Loader v-if="loading" />
+    <div class="app-main-layout" v-else>
+      <!--Добавляем импортированные компоненты Navbar и Sidebar в верстку-->  
+      <Navbar @click="isOpen = !isOpen" />
 
-    <Sidebar v-model="isOpen" />
+      <Sidebar v-model="isOpen" />
+      
+      <main class="app-content" :class="{full: !isOpen}">
+        <div class="app-page">
+          <router-view />
+        </div>
+      </main>
 
-    <main class="app-content" :class="{full: !isOpen}">
-      <div class="app-page">
-        <router-view />
+      <!-- Кнопка добавления новых записей (вызывается из любой страницы и перенаправляет на /record) -->
+      <div class="fixed-action-btn">
+        <router-link class="btn-floating btn-large blue" to="/record" v-tooltip="'Создать новую запись'">
+          <i class="large material-icons">add</i>
+        </router-link>
       </div>
-    </main>
-
-    <!-- Кнопка добавления новых записей (вызывается из любой страницы и перенаправляет на /record) -->
-    <div class="fixed-action-btn">
-      <router-link class="btn-floating btn-large blue" to="/record" v-tooltip="'Создать новую запись'">
-        <i class="large material-icons">add</i>
-      </router-link>
     </div>
   </div>
-</div>
 </template>
 
 <script>
 //Импортируем Navbar и Sidebar
-import Navbar from "@/components/app/Navbar";
-import Sidebar from "@/components/app/Sidebar";
+import Navbar from '@/components/app/Navbar'
+import Sidebar from '@/components/app/Sidebar'
+import messages from '@/utils/messages'
 
 export default {
-  name: "main-layout",
-  // Массив состояний
+  name: 'main-layout',
   data: () => ({
     isOpen: true,
     loading: true
@@ -45,7 +45,17 @@ export default {
     this.loading = false
   },
   components: {
-    Navbar, Sidebar,
+    Navbar, Sidebar
   },
-};
+  computed: {
+    error() {
+      return this.$store.getters.error
+    }
+  },
+  watch: {
+    error(fbError) {
+      this.$error(messages[fbError.code] || 'Что-то пошло не так')
+    }
+  }
+}
 </script>
