@@ -5,7 +5,7 @@
       <!--Добавляем импортированные компоненты Navbar и Sidebar в верстку-->  
       <Navbar @click="isOpen = !isOpen" />
 
-      <Sidebar v-model="isOpen" />
+      <Sidebar v-model="isOpen" :key="locale" />
       
       <main class="app-content" :class="{full: !isOpen}">
         <div class="app-page">
@@ -50,9 +50,16 @@ export default {
   computed: {
     error() {
       return this.$store.getters.error
+    },
+    // производим автоматическое обновление sidebar при смене языка локализации
+    locale() {
+      return this.$store.getters.info.locale
     }
   },
   watch: {
+    // locale() {
+    //   console.log('Locale changed')
+    // },
     error(fbError) {
       this.$error(messages[fbError.code] || 'Что-то пошло не так')
     }

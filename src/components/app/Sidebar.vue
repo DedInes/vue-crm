@@ -16,17 +16,18 @@
 
 <!--Выводим список ссылок в динамическом режиме, ссылки Sidebar-->
 <script>
+import localizeFilter from '@/filters/localize.filter'
 export default {
   // Если передаем модель, то прописываем props. value принимает состояние isOpen для обработки кнопки на SideBar
   props: ['value'],
   //Возвращаем объект data для каждой ссылки и указываем параметры
   data: () => ({
     links: [
-      {title: 'Счет', url: '/', exact: true},
-      {title: 'История', url: '/history'},
-      {title: 'Планирование', url: '/planning'},
-      {title: 'Новая запись', url: '/record'},
-      {title: 'Категории', url: '/categories'}
+      {title: localizeFilter('Menu_Bill'), url: '/', exact: true},
+      {title: localizeFilter('Menu_History'), url: '/history'},
+      {title: localizeFilter('Menu_Planning'), url: '/planning'},
+      {title: localizeFilter('Menu_Record'), url: '/record'},
+      {title: localizeFilter('Menu_Category'), url: '/categories'}
     ]
   })
 }
