@@ -26,6 +26,19 @@ export default {
         throw e
       }
     },
+    async fetchCategoryById({commit, dispatch}, id) {
+      try {
+        const uid = await dispatch('getUserId')
+        // подождем получения категории от БД firebase  
+        const category = (await firebase.database().ref(`/users/${uid}/categories`).child(id).once('value')).val() || {}
+        // проходимся по объекту categories и получаем на каждой итерации ключ
+        // вызываем метод map и трансформируем массив (keys(categories)) в другой массив
+        return {...category, id}
+      } catch (e) {
+        commit('setError', e)
+        throw e
+      }
+    },
     async updateCategory({commit, dispatch}, {title, limit, id}) {
       try {
         const uid = await dispatch('getUserId')

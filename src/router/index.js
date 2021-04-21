@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import firebase from 'firebase/app'
 
 Vue.use(VueRouter)
 
@@ -12,25 +13,25 @@ const router = new VueRouter({
     {
       path: '/categories',
       name: 'categories',
-      meta: {layout: 'main'},
+      meta: {layout: 'main', auth: true},
       component: () => import('../views/Categories.vue')
     },
     {
-      path: '/detail-record',
+      path: '/detail-record/:id',
       name: 'detail-record',
-      meta: {layout: 'main'},
+      meta: {layout: 'main', auth: true},
       component: () => import('../views/DetailRecord.vue')
     },
     {
       path: '/history',
       name: 'history',
-      meta: {layout: 'main'},
+      meta: {layout: 'main', auth: true},
       component: () => import('../views/History.vue')
     },
     {
       path: '/',
-      name: 'Home',
-      meta: {layout: 'main'},
+      name: 'home',
+      meta: {layout: 'main', auth: true},
       component: () => import('../views/Home.vue')
     },
     {
@@ -42,19 +43,19 @@ const router = new VueRouter({
     {
       path: '/planning',
       name: 'planning',
-      meta: {layout: 'main'},
+      meta: {layout: 'main', auth: true},
       component: () => import('../views/Planning.vue')
     },
     {
       path: '/profile',
       name: 'profile',
-      meta: {layout: 'main'},
+      meta: {layout: 'main', auth: true},
       component: () => import('../views/Profile.vue')
     },
     {
       path: '/record',
       name: 'record',
-      meta: {layout: 'main'},
+      meta: {layout: 'main', auth: true},
       component: () => import('../views/Record.vue')
     },
     {
@@ -64,6 +65,19 @@ const router = new VueRouter({
       component: () => import('../views/Register.vue')
     },
   ]
+})
+
+// проверяем наличие авторизации для защиты роутов
+router.beforeEach((to, from, next) =>{
+  const currentUser = firebase.auth().currentUser
+  const requireAuth = to.matched.some(record => record.meta.auth)
+
+  // если роут требует авторизации и нету авторизированного пользователя
+  if (requireAuth && !currentUser) {
+    next('/login?message=login')
+  } else {
+    next()
+  }
 })
 
 export default router

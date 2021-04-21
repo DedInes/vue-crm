@@ -23,6 +23,19 @@ export default {
         commit('setError', e)
         throw e
       }
+    },
+    async fetchRecordById({dispatch, commit}, id) {
+      try {
+        const uid = await dispatch('getUserId')
+        // подождем получения категории от БД firebase  
+        const record = (await firebase.database().ref(`/users/${uid}/records`).child(id).once('value')).val() || {}
+        // проходимся по объекту records и получаем на каждой итерации ключ
+        // вызываем метод map и трансформируем массив (keys(records)) в другой массив
+        return {...record, id}
+      } catch (e) {
+        commit('setError', e)
+        throw e
+      }
     }
   }
 }

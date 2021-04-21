@@ -1,6 +1,5 @@
 // содержим всю логику по авторизации, логауту и т.д.
 import firebase from 'firebase/app'
-import { register } from 'register-service-worker'
 
 export default {
   actions: {
